@@ -1,22 +1,18 @@
 # Makefile
 # - 루트에서 docker compose 스택을 제어한다.
-# - .env의 APP_ENV 값을 기준으로 dev/prod compose 파일을 자동 선택한다.
-# - 필요하면 COMPOSE_FILE=... 로 compose 파일을 강제 지정할 수 있다.
+# - 프로젝트명은 -p 옵션으로 전달해 컨테이너 이름 prefix를 고정한다.
+# - 개발/프로덕션 compose 파일을 각각 분리해 실행한다.
 -include .env
 
-APP_ENV ?= development
+PROJECT_NAME ?= govpage
 
-ifeq ($(APP_ENV),production)
-DEFAULT_COMPOSE_FILE := compose/docker-compose.prod.yml
-else
-DEFAULT_COMPOSE_FILE := compose/docker-compose.yml
-endif
+COMPOSE_FILE ?= compose/docker-compose.yml
+PROD_COMPOSE_FILE ?= compose/docker-compose.prod.yml
+ENV_FILE ?= .env
+COMPOSE := docker compose --env-file $(ENV_FILE) -p $(PROJECT_NAME) -f $(COMPOSE_FILE)
+COMPOSE_PROD := docker compose --env-file $(ENV_FILE) -p $(PROJECT_NAME) -f $(PROD_COMPOSE_FILE)
 
-# 필요하면: COMPOSE_FILE=compose/docker-compose.yml make up
-COMPOSE_FILE ?= $(DEFAULT_COMPOSE_FILE)
-COMPOSE := docker compose -f $(COMPOSE_FILE)
-
-.PHONY: up down logs ps restart
+.PHONY: up down logs ps restart up-prod down-prod logs-prod
 
 # 실행
 up:
@@ -38,3 +34,15 @@ ps:
 restart:
 	$(COMPOSE) down
 	$(COMPOSE) up -d --build
+
+# 프로덕션 실행
+up-prod:
+	$(COMPOSE_PROD) up -d --build
+
+# 프로덕션 종료
+down-prod:
+	$(COMPOSE_PROD) down
+
+# 프로덕션 로그
+logs-prod:
+	$(COMPOSE_PROD) logs -f --tail=200

@@ -1,6 +1,6 @@
-# FastAPI 엔트리포인트 파일이다.
-# 앱 인스턴스를 만들고 메인 API 라우터를 등록한다.
-# 실제 업무 라우트는 src/api 하위 모듈에 추가한다.
+# FastAPI 애플리케이션 진입 파일이다.
+# 공통 설정을 읽어 앱 제목을 구성하고 API 라우터를 연결한다.
+# 실제 엔드포인트는 src/api 하위 모듈에서 관리한다.
 
 from fastapi import FastAPI
 
@@ -9,5 +9,5 @@ from src.core.config import settings
 
 app = FastAPI(title=f"{settings.project_name} Backend")
 
-# 백엔드 기본 API prefix 루트 라우터를 등록한다.
+# /api prefix를 포함한 메인 라우터를 앱에 등록한다.
 app.include_router(api_router)
