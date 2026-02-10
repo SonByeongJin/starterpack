@@ -1,0 +1,60 @@
+# Data directories and generated artifacts
+data/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Node / frontend
+node_modules/
+dist/
+.npm/
+.pnpm-store/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Data file extensions
+*.csv
+*.tsv
+*.xlsx
+*.parquet
+*.jsonl
+*.sqlite
+*.sqlite3
+*.db
+*.wav
+*.mp3
+*.mp4
+*.png
+*.jpg
+*.jpeg
+*.zip
+*.gz
+*.bz2
+*.xz
