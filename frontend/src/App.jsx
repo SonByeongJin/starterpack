@@ -1,43 +1,23 @@
 // 포털 프론트 기본 화면 파일이다.
-// 통합 시연 시 API 경로는 /{project}/api 규칙을 사용한다.
-// 로컬 개발은 VITE_BASE_PATH를 비우고 /api로 호출하는 구성을 권장한다.
+// 통합 시연 시 API는 항상 /{project}/api 규칙으로 호출한다.
+// 실제 호출은 공통 API 클라이언트(fetchHello) 경유로만 수행한다.
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { fetchHello } from './api/hello';
 
-function normalizeBasePath(value) {
-  const raw = (value || '').trim();
-  if (!raw || raw === '/') {
-    return '';
-  }
-
-  const withLeadingSlash = raw.startsWith('/') ? raw : `/${raw}`;
-  return withLeadingSlash.replace(/\/+$/, '');
-}
-
-function App() {
-  const [message, setMessage] = useState('loading...');
+export default function App() {
+  const [text, setText] = useState('loading...');
 
   useEffect(() => {
-    const basePath = normalizeBasePath(import.meta.env.VITE_BASE_PATH);
-    const API_BASE = `${basePath}/api`;
-
-    axios
-      .get(`${API_BASE}/hello`)
-      .then((response) => {
-        setMessage(response?.data?.message || 'api error');
-      })
-      .catch(() => {
-        setMessage('api error');
-      });
+    fetchHello()
+      .then((data) => setText(typeof data === 'string' ? data : JSON.stringify(data)))
+      .catch((e) => setText(`API error: ${e?.message || 'unknown'}`));
   }, []);
 
   return (
-    <main>
+    <div style={{ padding: 24 }}>
       <h1>Portal Front</h1>
-      <p>{message}</p>
-    </main>
+      <p>{text}</p>
+    </div>
   );
 }
-
-export default App;
