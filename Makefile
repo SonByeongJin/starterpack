@@ -6,9 +6,8 @@
 
 PROJECT_NAME ?= temp
 APP_ENV ?= development
-
-DEV_COMPOSE_FILE ?= compose/docker-compose.yml
-PROD_COMPOSE_FILE ?= compose/docker-compose.prod.yml
+DEV_COMPOSE_FILE ?= docker-compose.yml
+PROD_COMPOSE_FILE ?= docker-compose.prod.yml
 
 ifeq ($(APP_ENV),production)
 DEFAULT_COMPOSE_FILE := $(PROD_COMPOSE_FILE)
