@@ -30,6 +30,7 @@ services:
       TZ: ${TZ:-Asia/Seoul}
       PROJECT_NAME: ${PROJECT_NAME:-temp}
       BACKEND_PORT: 8000
+      PYTHONPATH: /app
       DATA_ROOT: ${DATA_ROOT:-/data}
       DATA_WORK: ${DATA_WORK:-/data/work}
       DATA_DB: ${DATA_DB:-/data/db}
