@@ -1,0 +1,52 @@
+# 단일 프로젝트 프로덕션 compose 파일이다.
+# frontend nginx(외부 오픈)와 backend api(내부 전용)만 실행한다.
+# 상위 포털은 /{PROJECT_NAME}/ 경로를 frontend로 프록시해 통합한다.
+
+services:
+  # 백엔드 API 서비스: 내부 8000만 사용한다.
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      TZ: ${TZ:-Asia/Seoul}
+      PROJECT_NAME: ${PROJECT_NAME:-govpage}
+      BACKEND_PORT: 8000
+      DATA_ROOT: ${DATA_ROOT:-/data}
+      DATA_WORK: ${DATA_WORK:-/data/work}
+      DATA_DB: ${DATA_DB:-/data/db}
+      DATA_LOGS: ${DATA_LOGS:-/data/logs}
+    volumes:
+      - ./data:/data
+    expose:
+      - "8000"
+    # 디버그가 필요할 때만 외부 포트를 연다.
+    # ports:
+    #   - "${BACKEND_PORT:-18000}:8000"
+    networks:
+      app_net:
+
+        # 프론트 nginx 서비스: /{PROJECT_NAME}/ 하위 경로를 외부에 공개한다.
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: prod
+      args:
+        VITE_BASE_PATH: ${VITE_BASE_PATH:-/govpage/}
+    environment:
+      PROJECT_NAME: ${PROJECT_NAME:-govpage}
+    ports:
+      - "${FRONTEND_PORT:-18080}:80"
+    depends_on:
+      - backend
+    networks:
+      app_net:
+
+
+networks:
+  app_net:
+    driver: bridge
