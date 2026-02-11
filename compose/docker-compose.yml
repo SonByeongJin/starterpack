@@ -7,7 +7,7 @@ services:
   portal:
     image: nginx:alpine
     ports:
-      - "${FRONTEND_PORT:-18080}:80"
+      - "${PORTAL_HTTP_PORT:-18080}:80"
     environment:
       PROJECT_NAME: ${PROJECT_NAME:-temp}
     volumes:
