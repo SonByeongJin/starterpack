@@ -1,5 +1,9 @@
 # Data directories and generated artifacts
 data/
+datasets/
+models/
+weights/
+checkpoints/
 
 # Environment files
 .env
@@ -58,3 +62,40 @@ Thumbs.db
 *.gz
 *.bz2
 *.xz
+
+# ML/AI Models & Large Weights
+*.pt
+*.pth
+*.safetensors
+*.gguf
+*.bin
+*.onnx
+
+# Testing & Coverage
+.coverage
+.coverage.*
+htmlcov/
+coverage/
+*.lcov
+.tox/
+.nox/
+.hypothesis/
+.pytest_cache/
+
+# Framework Build & Temp files
+build/
+.next/
+out/
+tmp/
+temp/
+upload/
+uploads/
+
+# OS/IDE Extras
+*~
+*.swp
+*.swo
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
