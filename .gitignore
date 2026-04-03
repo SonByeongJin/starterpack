@@ -62,6 +62,7 @@ Thumbs.db
 *.gz
 *.bz2
 *.xz
+*.tar
 
 # ML/AI Models & Large Weights
 *.pt
